@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link href="scripts/Mansi_VendingMachine.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="jumbotron">
+        <center>
+            <h2>Welcome to Mansi's vending machine.</h2>
+            <!--Bootstrap buttons for buy Cola, Chips, Candy. On click displays table and check for Sold out/ Quantity-->
+            <input id="Cola" class="btn btn-info btn-lg" type="button" value="Buy Cola               1.00$" onclick="showHideTable(this)" />
+            <input id="Chips" class="btn btn-info btn-lg" type="button" value="Buy Chips                          0.50$" onclick="showHideTable(this)" />
+            <input id="Candy" class="btn btn-info btn-lg" type="button" value="Buy Candy                          0.65$" onclick="showHideTable(this)" />
+            <br />
+            <!--Table for inserting coins-->
+            <div id="Table" style="visibility:hidden">
+                <hr />
+                <hr />
+                <label id="Selection"></label>
+                <table border="1">
+                    <tr>
+                        <td>Enter Nickels</td>
+                        <td>Enter Dimes</td>
+                        <td>Enter Quaters</td>
+                    </tr>
+                    <tr>
+                        <td><input id="Nickels_value" type="text" value="0" /> </td>
+                        <td><input id="Dimes_value" type="text" value="0" /> </td>
+                        <td><input id="Quaters_value" type="text" value="0" /> </td>
+                    </tr>
+                </table>
+                <!--Buy button that on clicks accept money-->
+                <input id="Submit1" type="submit" value="Buy" onclick="acceptMoney()" />
+            </div>
+        </center>
+    </div>
+</body>
+</html>
+
+<script>
+
+    var nickel, dime, quater;
+    var selection, cost, totalCoins, change, answer = "";
+
+    //Initializing quantities (1 for testing pupose)
+    var ColaQuantity = 1;
+    var ChipsQuantity = 1;
+    var CandyQuantity = 1;
+
+//show hide table function for accepting coins
+    function showHideTable(obj) {
+        var quantity;
+        // getting selection from id
+        selection = obj.id;
+        
+        // checking quantity based on selection
+        if (selection == "Cola") {
+            quantity = ColaQuantity;
+        }
+        if (selection == "Chips") {
+            quantity = ChipsQuantity;
+        }
+        if (selection == "Candy") {
+            quantity = CandyQuantity;
+        }
+
+        // Accepting coins through table only if quantity is greater than or equal to 1
+        if(quantity >= 1 )
+        {
+
+        document.getElementById("Selection").innerHTML = "Your Selection:" + selection;
+        document.getElementById("Table").style.visibility = "visible";
+        
+        }
+        // if out of stock dislay sorry message
+        else {
+            alert("Sorry!! " + selection + " is out of stock")
+        }
+
+    }
+
+    //Accepting money function
+    function acceptMoney() {
+        // getting no. of coins inserted in nickels, dimes and quaters.
+        nickel = document.getElementById("Nickels_value").value;
+        console.log(nickel);
+        dime = document.getElementById("Dimes_value").value;
+        console.log(dime);
+        quater = document.getElementById("Quaters_value").value;
+        console.log(quater);
+        
+        // Confirm if customer wants to go ahead with purchase
+        var confirmTrue = confirm("Do you want to continue your purchase?")
+        if (confirmTrue == true)
+        {
+            // if yes go to method make change
+            makeChange();
+
+        }
+
+        else
+        {
+            // Otherwise return inserted coins
+            returnCoins();
+        }
+    }
+
+    function returnCoins(){
+        // return all coins and cancel order.
+        alert(" Please collect your return! Nickels:" + nickel+" Dimes:"+dime+ " Quaters:"+quater);
+
+    }
+
+    function makeChange() {
+        // Calculate total aount in cents
+        totalCoins = (nickel*5) + (dime*10) + (quater*25);
+
+        // Get cost in cent for each item
+        if (selection =="Cola") {
+            cost = 100;
+          
+        }
+        else if (selection =="Chips"){
+            cost = 50;
+            
+        }
+        else if (selection == "Candy") {
+            cost = 65;
+          
+        }
+        // calculate change by subracting total coins and cost
+        change = totalCoins - cost;
+
+
+        // if change is negative
+        if (change < 0) {
+            // ask for inserting coins
+            alert("Insert Coins!");
+
+        }
+            // else decrease quantity by 1
+        else {
+            if (selection == "Cola") {
+                
+                ColaQuantity = ColaQuantity - 1;
+            }
+            else if (selection == "Chips") {
+               
+                ChipsQuantity = ChipsQuantity - 1;
+            }
+            else if (selection == "Candy") {
+                
+                CandyQuantity = CandyQuantity - 1;
+            }
+
+            // return change
+            // if change is greater than 25 give quaters
+            if (change >= 25) {
+                //no. of quater
+                var changeQuater = parseInt(change / 25);
+                // change left
+                change = change % 25;
+                answer = answer + "Quaters: " + changeQuater;
+
+            }
+            // if rest change is greater than 10 give dimes
+            if (change >= 10) {
+                //no. of dime
+                var changeDime = parseInt(change / 10);
+                // change left
+                change = change % 10;
+                answer = answer + "Dimes: " + changeDime;
+            }
+            // icf rest change is greater than 5 give nickels
+            if (change >= 5) {
+                //no. of dime
+                var changeNickel = parseInt(change / 5);
+                // change left
+                change = change % 5;
+                answer = answer + "Nickels: " + changeNickel;
+            }
+
+            // Give item and return change
+            alert("Thank you. Enjoy your purchase!!! Please collect your change:" + answer);
+           
+            document.getElementById("Table").style.visibility = "hidden";
+                
+        }
+
+    }
+</script>
