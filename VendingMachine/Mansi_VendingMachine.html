@@ -45,8 +45,8 @@
 
 <script>
 
-    var nickel, dime, quater;
-    var selection, cost, totalCoins, change, answer = "";
+    var nickel=0, dime=0, quater=0;
+    var selection="", cost=0, totalCoins=0, change=0, answer = "";
 
     //Initializing quantities (1 for testing pupose)
     var ColaQuantity = 1;
@@ -113,7 +113,7 @@
 
     function returnCoins(){
         // return all coins and cancel order.
-        alert(" Please collect your return! Nickels:" + nickel+" Dimes:"+dime+ " Quaters:"+quater);
+        alert(" Please collect your return! \n Nickels:" + nickel+"\n  Dimes:"+dime+ " \n Quaters:"+quater);
 
     }
 
@@ -159,6 +159,8 @@
                 CandyQuantity = CandyQuantity - 1;
             }
 
+            //clear answer
+            answer = "";
             // return change
             // if change is greater than 25 give quaters
             if (change >= 25) {
@@ -166,7 +168,7 @@
                 var changeQuater = parseInt(change / 25);
                 // change left
                 change = change % 25;
-                answer = answer + "Quaters: " + changeQuater;
+                answer = answer + "\n Quaters: " + changeQuater;
 
             }
             // if rest change is greater than 10 give dimes
@@ -175,7 +177,7 @@
                 var changeDime = parseInt(change / 10);
                 // change left
                 change = change % 10;
-                answer = answer + "Dimes: " + changeDime;
+                answer = answer + "\n Dimes: " + changeDime;
             }
             // icf rest change is greater than 5 give nickels
             if (change >= 5) {
@@ -183,14 +185,16 @@
                 var changeNickel = parseInt(change / 5);
                 // change left
                 change = change % 5;
-                answer = answer + "Nickels: " + changeNickel;
+                answer = answer + "\n Nickels: " + changeNickel;
             }
 
             // Give item and return change
-            alert("Thank you. Enjoy your purchase!!! Please collect your change:" + answer);
+            alert("Thank you. Enjoy your purchase!!! \n Please collect your change:" + answer);
            
             document.getElementById("Table").style.visibility = "hidden";
-                
+            document.getElementById("Nickels_value").value = 0;
+            document.getElementById("Dimes_value").value = 0;
+            document.getElementById("Quaters_value").value = 0;
         }
 
     }
